@@ -6,9 +6,14 @@ from tensorflow.keras.preprocessing.image import img_to_array
 from PIL import Image
 import tempfile
 import os
+import gdown
 
-# Load model
-model = load_model("emotion_model.keras")
+url = "https://drive.google.com/uc?id=1ORzBsraPQffYJ02icAcLv1brhpUiQUSh"
+output = "emotion_model.keras"
+
+if not os.path.exists(output):
+    gdown.download(url, output, quiet=False)
+
 labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
 face_cascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
 
