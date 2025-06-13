@@ -54,26 +54,20 @@ if option == "Upload Image":
 
 # Webcam mode
 elif option == "Use Webcam":
-    st.info("Click start to begin webcam-based prediction.")
-    run = st.checkbox('Start Webcam')
-    FRAME_WINDOW = st.image([])
+    st.info("Use the button below to capture an image from your webcam.")
+    captured_image = st.camera_input("Take a picture")
 
-    cap = cv2.VideoCapture(0)
-    while run:
-        ret, frame = cap.read()
-        if not ret:
-            break
-
-        emotion, box = predict_emotion(frame)
+    if captured_image is not None:
+        image = Image.open(captured_image)
+        img_np = np.array(image)
+        emotion, box = predict_emotion(img_np)
         if box:
             x, y, w, h = box
-            cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
-            cv2.putText(frame, emotion, (x, y - 10),
+            cv2.rectangle(img_np, (x, y), (x+w, y+h), (255, 0, 0), 2)
+            cv2.putText(img_np, emotion, (x, y - 10),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+        st.image(img_np, caption=f"Detected Emotion: {emotion}", use_container_width=True)
 
-        FRAME_WINDOW.image(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
-
-    cap.release()
 
 # Video upload
 elif option == "Upload Video":
