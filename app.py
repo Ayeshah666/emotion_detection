@@ -8,16 +8,21 @@ import tempfile
 import os
 import gdown
 
+# === Download model if not present ===
 url = "https://drive.google.com/uc?id=1ORzBsraPQffYJ02icAcLv1brhpUiQUSh"
 output = "emotion_model.keras"
 
 if not os.path.exists(output):
     gdown.download(url, output, quiet=False)
 
+# ✅ Load model here BEFORE using it
+model = load_model(output)
+
+# === Constants and Utilities ===
 labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
 face_cascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
 
-# Preprocess face
+# === Helper functions ===
 def preprocess_face(image):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5)
@@ -29,10 +34,9 @@ def preprocess_face(image):
     face = face / 255.0
     face = img_to_array(face)
     face = np.expand_dims(face, axis=0)
-    face = np.expand_dims(face, axis=-1)  # add channel for grayscale
+    face = np.expand_dims(face, axis=-1)  # for grayscale
     return face, (x, y, w, h)
 
-# Predict emotion
 def predict_emotion(image):
     result = preprocess_face(image)
     if result is None:
@@ -42,6 +46,7 @@ def predict_emotion(image):
     confidence = np.max(prediction)
     label = labels[np.argmax(prediction)]
     return f"{label} ({confidence:.2f})", (x, y, w, h)
+
 
 # Streamlit UI
 st.title("😄 Real-Time Emotion Detection")
