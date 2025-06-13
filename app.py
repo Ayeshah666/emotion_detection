@@ -65,7 +65,7 @@ elif option == "Use Webcam":
 
     img_file = st.camera_input("Take a picture")
 
-    if img_file is not None:
+if img_file is not None:
     image = Image.open(img_file).convert("RGB")
     img_np = np.array(image)
 
