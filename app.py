@@ -60,12 +60,14 @@ elif option == "Use Webcam":
     if captured_image is not None:
         image = Image.open(captured_image)
         img_np = np.array(image)
+
         emotion, box = predict_emotion(img_np)
         if box:
             x, y, w, h = box
             cv2.rectangle(img_np, (x, y), (x+w, y+h), (255, 0, 0), 2)
             cv2.putText(img_np, emotion, (x, y - 10),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+
         st.image(img_np, caption=f"Detected Emotion: {emotion}", use_container_width=True)
 
 
