@@ -54,7 +54,7 @@ if  img_file:
     image = Image.open(img_file).convert("RGB")  # Ensure RGB mode
     img_np = np.array(image)
 
-    st.image(image, caption="Uploaded Image", use_container_width=True)
+    st.image(image, caption="Uploaded Image")
     emotion, _ = predict_emotion(img_np)
     st.success(f"Prediction: {emotion}")
 
