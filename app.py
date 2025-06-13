@@ -6,14 +6,9 @@ from tensorflow.keras.preprocessing.image import img_to_array
 from PIL import Image
 import tempfile
 import os
-import gdown
 
-url = "https://drive.google.com/uc?id=1zCS4Wm4euCLm_2ta7LfAAP-fT_KLqT8e"    
-output = "emotion_model.keras"
-
-if not os.path.exists(output):
-    gdown.download(url, output, quiet=False)
-
+# Load model
+model = load_model("emotion_model.keras")
 labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
 face_cascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
 
@@ -110,3 +105,4 @@ elif option == "Upload Video":
 
         cap.release()
         os.remove(temp_path)
+
