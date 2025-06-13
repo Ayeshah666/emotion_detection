@@ -51,11 +51,13 @@ option = st.radio("Select Input Type:", ["Upload Image", "Use Webcam", "Upload V
 if option == "Upload Image":
     img_file = st.file_uploader("Upload an image", type=["jpg", "png", "jpeg"])
     if img_file:
-        image = Image.open(img_file)
-        img_np = np.array(image)
-        st.image(image, caption="Uploaded Image", use_container_width=True)
-        emotion, _ = predict_emotion(img_np)
-        st.success(f"Prediction: {emotion}")
+    image = Image.open(img_file).convert("RGB")  # Ensure RGB mode
+    img_np = np.array(image)
+
+    st.image(image, caption="Uploaded Image", use_container_width=True)
+    emotion, _ = predict_emotion(img_np)
+    st.success(f"Prediction: {emotion}")
+
 
 # Webcam mode
 elif option == "Use Webcam":
@@ -64,17 +66,18 @@ elif option == "Use Webcam":
     img_file = st.camera_input("Take a picture")
 
     if img_file is not None:
-        image = Image.open(img_file)
-        img_np = np.array(image)
+    image = Image.open(img_file).convert("RGB")
+    img_np = np.array(image)
 
-        emotion, box = predict_emotion(img_np)
-        if box:
-            x, y, w, h = box
-            cv2.rectangle(img_np, (x, y), (x+w, y+h), (255, 0, 0), 2)
-            cv2.putText(img_np, emotion, (x, y - 10),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+    emotion, box = predict_emotion(img_np)
+    if box:
+        x, y, w, h = box
+        cv2.rectangle(img_np, (x, y), (x+w, y+h), (255, 0, 0), 2)
+        cv2.putText(img_np, emotion, (x, y - 10),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
 
-        st.image(img_np, caption=f"Prediction: {emotion}", channels="BGR", use_container_width=True)
+    st.image(img_np, caption=f"Prediction: {emotion}", channels="BGR", use_container_width=True)
+
 
 # Video upload
 elif option == "Upload Video":
