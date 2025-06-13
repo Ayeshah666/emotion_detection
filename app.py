@@ -50,7 +50,7 @@ option = st.radio("Select Input Type:", ["Upload Image", "Use Webcam", "Upload V
 # Image upload
 if option == "Upload Image":
     img_file = st.file_uploader("Upload an image", type=["jpg", "png", "jpeg"])
-    if img_file:
+if  img_file:
     image = Image.open(img_file).convert("RGB")  # Ensure RGB mode
     img_np = np.array(image)
 
