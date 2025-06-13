@@ -55,20 +55,32 @@ if option == "Upload Image":
 # Webcam mode
 elif option == "Use Webcam":
     st.info("Use the button below to capture an image from your webcam.")
+    
+    # Take photo using browser camera
     captured_image = st.camera_input("Take a picture")
 
     if captured_image is not None:
-        image = Image.open(captured_image)
+        # Load and convert image to NumPy array
+        image = Image.open(captured_image).convert('RGB')
         img_np = np.array(image)
 
-        emotion, box = predict_emotion(img_np)
+        # Convert RGB to BGR for OpenCV (since you're using cv2 face detector)
+        img_bgr = cv2.cvtColor(img_np, cv2.COLOR_RGB2BGR)
+
+        # Predict emotion
+        emotion, box = predict_emotion(img_bgr)
+
+        # Draw bounding box and emotion
         if box:
             x, y, w, h = box
             cv2.rectangle(img_np, (x, y), (x+w, y+h), (255, 0, 0), 2)
             cv2.putText(img_np, emotion, (x, y - 10),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
 
+        # Show the result image with overlay
         st.image(img_np, caption=f"Detected Emotion: {emotion}", use_container_width=True)
+    else:
+        st.warning("Please take a photo to begin prediction.")
 
 
 # Video upload
