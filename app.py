@@ -9,8 +9,8 @@ import os
 import gdown
 
 # === Download model if not present ===
-url = "https://drive.google.com/uc?id=1jko8eBtOU0BP3CgLnoNyFB8aGGM_RFPX"  
-output = "emotion_model.h5"
+url = "https://drive.google.com/uc?id=1zCS4Wm4euCLm_2ta7LfAAP-fT_KLqT8e"  
+output = "emotion_model.keras"
 
 if not os.path.exists(output):
     gdown.download(url, output, quiet=False)
