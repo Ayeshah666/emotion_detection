@@ -8,7 +8,7 @@ import tempfile
 import os
 
 # Load model
-model = load_model("emotion_model.h5")
+model = load_model("emotion_model.keras")
 labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
 face_cascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
 
