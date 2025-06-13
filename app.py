@@ -8,15 +8,13 @@ import tempfile
 import os
 import gdown
 
-# === Download model if not present ===
-url = "https://drive.google.com/uc?id=1zCS4Wm4euCLm_2ta7LfAAP-fT_KLqT8e"  
-output = "emotion_model.keras"
+url = "https://drive.google.com/uc?id=1zCS4Wm4euCLm_2ta7LfAAP-fT_KLqT8e"
+output = "emotion_model.keras"  # or .h5 if you're using the legacy format
+gdown.download(url, output, quiet=False)
+model = load_model(output)
 
 if not os.path.exists(output):
     gdown.download(url, output, quiet=False)
-
-# ✅ Load model here BEFORE using it
-model = load_model(output)
 
 # === Constants and Utilities ===
 labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
