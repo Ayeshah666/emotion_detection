@@ -39,7 +39,7 @@ def predict_emotion(image):
     return f"{label} ({confidence:.2f})", (x, y, w, h)
 
 # Streamlit UI
-st.title("😄 Real-Time Emotion Detection")
+st.title("🎥 Real-Time Emotion Detection")
 option = st.radio("Select Input Type:", ["Upload Image", "Use Webcam", "Upload Video"])
 
 # Image upload
